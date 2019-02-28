@@ -13,4 +13,4 @@ Group Members:
 
 Project Description
 # Crypto_Portal
-Crypto_Portal is crypto-currency system where users will be able to view how their coins are doing on the market and trades which are available, it will also provide an offline token encryption service. 
+Crypto_Portal is an offline crypto-currency system where users will be able to view how their coins are doing on the market and trades which are available, it will also provide an offline token encryption service. 
