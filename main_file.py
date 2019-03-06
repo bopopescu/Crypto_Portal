@@ -19,7 +19,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, PageTwo):
+        for F in (StartPage, SignIn, SignUp):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -45,9 +45,9 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="This is the start page", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
-        button1 = tk.Button(self, text="Go to Page One",
+        button1 = tk.Button(self, text="SignIn",
                             command=lambda: controller.show_frame("SignIn"))
-        button2 = tk.Button(self, text="Go to Page Two",
+        button2 = tk.Button(self, text="SignUp",
                             command=lambda: controller.show_frame("SignUp"))
         button1.pack()
         button2.pack()
