@@ -107,11 +107,11 @@ class SignUp(tk.Frame):
         email_ent = tk.Entry(self, textvariable=self.email)
         email_ent.grid(column=0, row=4, sticky=("N", "E"))
 
-        self.password = tk.StringVar
+        self.password = tk.StringVar()
         password_ent = tk.Entry(self, show="*", textvariable=self.password)
         password_ent.grid(column=0, row=5, sticky=("N", "E"))
 
-        self.password2 = tk.StringVar
+        self.password2 = tk.StringVar()
         password2_ent = tk.Entry(self, show="*", textvariable=self.password2)
         password2_ent.grid(column=0, row=7, sticky=("N", "E"))
 
@@ -125,16 +125,16 @@ class SignUp(tk.Frame):
         back_btn.grid(column=0, row=8, sticky=("S","W"))
 
     def click_create_profile(self):
-        print(self.name.get())
-        print(self.last_name.get())
-        print(self.phone.get())
-        print(self.email.get())
-        print(self.password)
-        print(self.password2)
-        if pass_word_check(self.password, self.password2):
-            self.test.configure(text="You have successfully created a profile "+self.name.get())
-        else:
-            self.test.configure(text="You have failed to create a profile.")
+        name = self.name.get()
+        surname = self.last_name.get()
+        phone = self.phone.get()
+        email  = self.email.get()
+        password = self.password.get()
+        password2 = self.password2.get()
+
+        return_message = pass_word_check(name, surname, email, phone, password, password2)
+        self.test.configure(text=return_message)
+        
 
 
 
