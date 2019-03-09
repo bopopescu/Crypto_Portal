@@ -60,15 +60,54 @@ class StartPage(tk.Frame):
 class SignIn(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="black")
+        tk.Frame.config(self, width="500", height="500")
         self.controller = controller
-        label = tk.Label(self, text="This is the sign-in page ", font=controller.title_font)
-        label.grid(column=0, row=0, sticky="N")
 
+        title_frame = tk.Frame(self, bg="lawn green")
+        title_frame.place(relx=0, rely=0, relwidth=1, relheight=1 / 3)
+        credits_frame = tk.Frame(self, bg="lawn green")
+        credits_frame.place(relx=0, rely=1 / 3, relwidth=1, relheight=1 / 3)
+        login_frame = tk.Frame(self, bg="lawn green")
+        login_frame.place(relx=0, rely=2 / 3, relwidth=1, relheight=1 / 3)
 
-        back = tk.Button(self, text="Back",
-                           command=lambda: controller.show_frame("StartPage"))
-        back.grid(column=0,row=1, sticky=("S","E"))
+        title_label = tk.Label(title_frame, bg="lawn green", text="Crypto Portal", font=controller.title_font).pack(
+            side="top", fill="x", pady=10)
+        login_label = tk.Label(title_frame, text="Login", bg="lime green").pack()
+
+        self.username = tk.StringVar()
+        self.password = tk.StringVar()
+
+        credits_container = tk.Frame(credits_frame, bg="lawn green")
+        username_label = tk.Label(credits_container, text="Username", bg="lawn green")
+        username_label.grid(row=0, column=0)
+        password_label = tk.Label(credits_container, text="Password", bg="lawn green")
+        password_label.grid(row=1, column=0)
+        self.username_entry = tk.Entry(credits_container, width=20, bg="green yellow", textvariable=self.username)
+        self.username_entry.grid(row=0, column=1)
+        self.password_entry = tk.Entry(credits_container, fg="red", width=20, bg="green yellow", show="*",
+                                       textvariable=self.password).grid(row=1, column=1)
+        empty_frame = tk.Label(credits_container, bg="lawn green").grid(row=2, columnspan=1, rowspan=1)
+        forgot_password = tk.Button(credits_container, text="   Forgot passoword?  ", fg="red", bg="lawn green",
+                                    borderwidth=0, command=lambda: self.do_forgot_password()).grid(row=3, columnspan=2)
+        credits_container.pack()
+
+        login_button = tk.Button(login_frame, text="Login", bg="lime green", command=lambda: self.do_login())
+        login_button.place(relx=0.5, rely=0 / 3)
+        back_button = tk.Button(login_frame, text="Back", bg="lime green",
+                                command=lambda: self.controller.show_frame("StartPage")).place(relx=0.5, rely=1 / 3)
+
+    def do_login(self):
+        if self.valid():  # if username and password are correct
+            self.controller.show_frame("StartPage")
+            self.clear_entries()
+        else:
+            self.controller.show_frame("StartPage")
+            self.clear_entries()
+
+    def do_forgot_password(self):
+        self.clear_entries()
+        self.controller.show_frame("StartPage")
 
 
 class SignUp(tk.Frame):
