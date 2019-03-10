@@ -5,4 +5,4 @@ cache: pip
 install:
   - pip install -r requirements.txt
 script:
-  -python3 main_file.py
+  -python3 test_scrip.py
