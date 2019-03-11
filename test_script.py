@@ -1,5 +1,5 @@
 import unittest
-from extra_functions import *
+from extra_functions import details_check
 from main_file import *
 app = SampleApp()
 
