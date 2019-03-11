@@ -3,7 +3,7 @@ import hashlib
 import os
 import re
 
-def pass_word_check(name, surname, email, phone, pass1,pass2):
+def details_check(name, surname, email, phone, pass1,pass2):
 	return_message = ''
 	if name == "":
 		return_message ="Name Field is required!"
@@ -20,20 +20,6 @@ def pass_word_check(name, surname, email, phone, pass1,pass2):
 	elif pass1 != pass2:
 		return_message = "Password mismatch!"
 	else:
-		return_message ="account created"
+		return_message ="Account created!"
 
 	return return_message
-
-
-"""
-md5pw = StringVar()
-Password ="HelloBabe"
-def passwordHash(Password):
-	hash_obj1 = hashlib.md5()
-	pwmd5 = Password.encode('utf-8')
-	hash_obj1.update(pwmd5)
-	md5pw.set(hash_obj1.hexdigest())
-	return md5pw.get()
-
-print(passwordHash(Password))
-"""
