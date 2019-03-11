@@ -21,5 +21,5 @@ def details_check(name, surname, email, phone, pass1,pass2):
 		return_message = "Password mismatch!"
 	else:
 		return_message ="Account created!"
-
 	return return_message
+
