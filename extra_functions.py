@@ -29,6 +29,6 @@ def login_check(username,password):
 		return_message="Please fill in your details."
 		return return_message
 	else:
-		return_message=''
+		return_message='You have succefully logged in.'
 		return return_message
 	
