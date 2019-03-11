@@ -19,9 +19,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(login_check("hello","world"),"Please fill in your details.")
         
     #Testing if the loging_check function returns correct message if fields are not complete     
-
     def test_login_check_(self):
-        self.assertEqual(login_check("hello","world"),"You have succefully logged in.")
+        self.assertEqual(login_check("hello",""),"You have succefully logged in.")
         
     
 if __name__ == '__main__':
