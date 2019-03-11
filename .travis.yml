@@ -6,6 +6,7 @@ cache: pip
 install:
   - pip install -r requirements.txt
 script:
-  - python3 test_script.py
+  - python3 --cov=test_script.py
 after_success:
   - coveralls
+  
