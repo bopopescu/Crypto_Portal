@@ -108,8 +108,6 @@ class SignIn(tk.Frame):
         self.rowconfigure(5, weight=1)
 
     def do_login(self):
-        print("do_log_in")
-        print("printing username =",self.username.get()," password =", self.password.get())
         if login_check(self.username.get(),self.username.get()):
             self.controller.show_frame("MainPage")
         else:
@@ -212,7 +210,6 @@ class SignUp(tk.Frame):
 	
 	#Button for the create profile button if successful it will take you to the MainPage else a error message will pop up
     def click_create_profile(self):
-        print("this is click_create-password")
         name = self.name.get()
         surname = self.last_name.get()
         phone = self.phone.get()
@@ -234,7 +231,7 @@ class MainPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        log_out=tk.Button(self,text="Back To Main",command=lambda:self.controller.show_frame("StartPage")).grid(sticky="NEWS")
+        log_out=tk.Button(self,text="Back To StartPage",command=lambda:self.controller.show_frame("StartPage")).grid(sticky="NEWS")
         self.config(bg="yellow green")
 
 if __name__ == "__main__":
