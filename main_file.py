@@ -1,6 +1,6 @@
 import tkinter as tk                # python 3
 from tkinter import font  as tkfont # python 3
-from extra_functions import pass_word_check
+from extra_functions import details_check
 
 
 class SampleApp(tk.Tk):
@@ -171,7 +171,7 @@ class SignUp(tk.Frame):
         password = self.password.get()
         password2 = self.password2.get()
 
-        return_message = pass_word_check(name, surname, email, phone, password, password2)
+        return_message = details_check(name, surname, email, phone, password, password2)
         self.test.configure(text=return_message)
         
 
