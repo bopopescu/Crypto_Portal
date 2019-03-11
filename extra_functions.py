@@ -23,3 +23,12 @@ def details_check(name, surname, email, phone, pass1,pass2):
 		return_message ="Account created!"
 	return return_message
 
+def login_check(username,password):
+	return_messgae=''
+	if username=="" or password="":
+		return_message="Please fill in your details."
+		return return_message
+	else:
+		return_message=''
+		return return_message
+	
