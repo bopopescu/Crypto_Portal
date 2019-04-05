@@ -119,11 +119,12 @@ class SignIn(tk.Frame):
         self.rowconfigure(5, weight=1)
 
     def do_login(self):
-        if database.valid_login( self.username.get(), self.password.get() ):
+        result = extra_functions.login_check( self.username.get(), self.password.get() )
+        if  result == True:
+            # login
             self.controller.show_frame("MainPage")
         else:
-            print( "hey" )
-            self.messege.set( "incorrect username or password" )
+            self.messege.set( result )
 
     def do_forgot_password(self):
         print("do_forgot_password")
