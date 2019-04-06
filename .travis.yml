@@ -6,7 +6,3 @@ install:
   - pip install -r requirements.txt
 script:
   - python3 test_script.py
-  - python3 .coveralls.yml
-after_success:
-  - coveralls
-  
