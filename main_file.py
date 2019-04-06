@@ -1,7 +1,6 @@
 
 import tkinter as tk
 import tkinter.font as tkfont
-import Database as database
 import extra_functions as extra_functions
 
 
