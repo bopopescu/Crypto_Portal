@@ -1,5 +1,7 @@
 Coveralls MarkDown
-[![Coverage Status](https://coveralls.io/repos/github/NtokozoRibane/Crypto_Portal/badge.svg?branch=master)](https://coveralls.io/github/NtokozoRibane/Crypto_Portal?branch=master)
+
+
+
 Build MarkDown
 [![Build Status](https://travis-ci.org/NtokozoRibane/Crypto_Portal.svg?branch=master)](https://travis-ci.org/NtokozoRibane/Crypto_Portal)
 
