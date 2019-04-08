@@ -9,6 +9,13 @@ before_install:
 install:
   - pip install -r requirements.txt
 script:
-  - python3 test_script.py
+   - coverage run test_script.py
 after_success:
-  - coveralls
+- codecov
+
+# after_success:
+#   - coveralls
+# script:
+#   - coverage run tests.py
+
+# # Push the results back to codecov
