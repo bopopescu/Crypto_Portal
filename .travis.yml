@@ -5,7 +5,10 @@ cache: pip
 
 before_install:
   - pip install mysql-connector-python
+  - pip install coveralls
 install:
   - pip install -r requirements.txt
 script:
   - python3 test_script.py
+after_success:
+  - coveralls
