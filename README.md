@@ -1,4 +1,5 @@
-Coveralls MarkDown
+Code Coverage
+[![codecov](https://codecov.io/gh/NtokozoRibane/Crypto_Portal/branch/master/graph/badge.svg)](https://codecov.io/gh/NtokozoRibane/Crypto_Portal)
 
 
 
