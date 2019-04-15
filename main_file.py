@@ -1,4 +1,3 @@
-
 import tkinter as tk
 import tkinter.font as tkfont
 import Database as database
@@ -242,6 +241,7 @@ class MainPage(tk.Frame):
         self.controller = controller
 
         json_url = "https://newsapi.org/v2/everything?q=bitcoin&apiKey=628da1c052e745c7a577c25bfc504d49"
+
         with urllib.request.urlopen(json_url) as url:
             self.data = json.loads(url.read().decode())
 
@@ -252,90 +252,55 @@ class MainPage(tk.Frame):
 
         #creating a container to hold market news
         self.newsFrame = tk.LabelFrame(self,text="Market News", bg=self.default_bg)
-        self.newsFrame.grid(column="0",columnspan="2",row="2", rowspan="2")
-        #row_counter = [1,6,11,16,21];
-        #row_counter_btn = [1,3,5,7,9]
-
-        #newsFrame = tk.LabelFrame(self,text="view frame", bg="green")
-        #newsFrame.grid( row="0", column="0", rowspan="50", columnspan="10" )
-
+        self.newsFrame.grid(column="0",columnspan="2",row="2")
         self.options = []
 
-        self.description = ""
-        self.description_label = tk.Label(self.newsFrame, text=self.description, bg=self.default_bg)
-        self.description_label.grid(column=0, columnspan="8",row=4, rowspan="100", padx="500", pady="50", sticky="W")
+        self.tkinter_text = tk.Text(self.newsFrame, bg=self.default_bg, font=tkfont.Font(family="Times", size=12) , wrap=tk.WORD )
+        #self.tkinter_text.config(state=tk.DISABLED)
+        self.tkinter_text.grid(row=2)
 
         for i in range(0,5):
             test_string = self.article_values[i]["title"]
-            print( self.article_values[i]["description"] )
             self.options.append( test_string )
 
-        #self.display_image("image_one.jpg")
-
-        self.do_something()
+        self.create_dropdown()
 
         log_out = tk.Button(self, text="Logout",command=lambda: self.controller.show_frame("StartPage")).grid(sticky="SE")
         self.config(bg="yellow green")
 
-    def concat(self, array):
-        ret = ""
-        for i in array:
-            ret +=  i+"\n"
-        return ret
 
-    def split_string(self, string):
-        array = []
-        prev = 0
-        i = 0
-        diff = i - prev
-        while i < len(string) :
-            if string[i] == " " and i > 20 and i-prev>20 :
-                array.append( string[prev:i] )
-                prev = i
-                i+=20
-            else:
-                ++i
-        return array
-
-    def get_desriptin(self, title):
+    def get_desription(self, title):
+         result = None
          for i in range(0,20):
              if title == self.article_values[i]["title"] :
                  result = self.article_values[i]["description"]
-                 counter =0
-                 new_result =""
-                 for j in result:
-                     if counter == 20:
-                         new_result = new_result+"\n"
-                         counter=0
 
-                     counter=counter+1
-                     if new_result=="":
-                         new_result = new_result+ j
-                     elif j[len(j)-1]==".":
-                         new_result = new_result+" "+j
-                     else:
-                         new_result = new_result + " "+j
+         if result==None:
+             return " cannnot find description "
+         else:
+            #print( "returning ->\"", result,"\"" )
+            return result
 
 
-         return new_result
-
-
-    def do_something(self):
+    def create_dropdown(self):
         tkvar = tk.StringVar(self.newsFrame)
         choices = self.options
         tkvar.set(choices[0])
-        popupMenu = tk.OptionMenu(self.newsFrame, tkvar, *choices)
+        self.popupMenu = tk.OptionMenu(self.newsFrame,tkvar, *choices)
+        self.popupMenu.config(bg="green")
+        self.tkinter_text.insert(tk.END, self.get_desription( choices[0] ) )
 
         def change_dropdown(*args):
-            #self.description_label.
-            self.description_label["text"] = self.get_desriptin( tkvar.get() )
-            print(tkvar.get())
+            self.tkinter_text.config(state=tk.NORMAL)
+            self.tkinter_text.delete(1.0,tk.END)
+            self.tkinter_text.insert(tk.END, self.get_desription( tkvar.get() ) )
+            self.tkinter_text.config(state=tk.DISABLED)
 
         tkvar.trace('w', change_dropdown)
-
-        popupMenu.grid(row=2, column=1)
+        self.popupMenu.grid(row=1, sticky="WE")
 
 
 if __name__ == "__main__":
     app = SampleApp()
+    app.show_frame("MainPage")
     app.mainloop()
