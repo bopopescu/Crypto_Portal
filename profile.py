@@ -12,10 +12,7 @@ class Profile(tk.Frame):
         label_ = tk.Label(self, text="Profile Settings")
         label_.grid(sticky="W")
 
-
-
-        #DISPLAY CURRENT CREDITS
-
+        #DISPLAY LABELS
         tk.Label(self, text="Username :").grid( row=2, column=0)
         tk.Label(self, text= "Email Address :").grid( row=3, column=0)
         tk.Label(self, text= "Cell # :").grid( row=4, column=0)
@@ -27,8 +24,9 @@ class Profile(tk.Frame):
         self.email_add_display.grid( row=3, column=1 )
         self.cell_num_display = tk.Label(self, text="" )
         self.cell_num_display.grid( row=4, column=1 )
-
-  
+        
+        #Text entry to take in changes to the above details
+        #We create functions to post the data to the database
         new_email_ = tk.StringVar()
         new_email = tk.Entry(self, textvariable=new_email_)
         new_email.grid(column="3", columnspan="3", row="3")
@@ -42,8 +40,6 @@ class Profile(tk.Frame):
 
     def update_username_display(self ):
         username = database.get_current_username()
-        print("username =", username )
         self.username_display["text"] = username
         self.email_add_display["text"] = database.get_email_add( username )
-        #print("finnidfadfadfds")
         self.cell_num_display["text"] = database.get_cell_num( username )
