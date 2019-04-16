@@ -26,6 +26,7 @@ class Database():
             self.connection = None
             self.mycursor = None
             print( "no connection" )
+        #self.connection.   (buffered=True,dictionary=True)\
 
     #ADDS USER DETAILS TO DATABASE
     def add_user_to_database(self,username, hash_password, random_string, email, phone):
@@ -72,25 +73,11 @@ class Database():
         sql = "select * from users where username=(%s)"
         self.mycursor.execute( sql, [username] )
         result = self.mycursor.fetchall()
+        print( result )
         if( result == [] ):
             return False
         else:
             return True
-
-    #RETURNS STORED RAND_STRING STORED IN DATABASE TABLE USERS
-    def get_stored_random_string( self, username ):
-        sql = "select rand_string from users where username=(%s)"
-        self.mycursor.execute( sql, [username] )
-        results = self.mycursor.fetchall()
-        return results
-
-
-    #RETURNS HASHED PASSWORD DATABASE TABLE USERS
-    def get_hashed_password( self, username ):
-        sql = "select password from users where username=(%s)"
-        self.mycursor.execute( sql , [username] )
-        result = self.mycursor.fetchall()
-        return result
 
     # RETURNS TRUE IF USERNAME AND PASSWORD MATCH IN DATABASE TABLE USERS ELSE FALSE
     def username_password_match(self, username, password ):
@@ -115,9 +102,47 @@ class Database():
         else:
             return False
 
+    #SETS CURRENT USERNAME
+    def set_current_username(self, username ):
+        self.current_username = username
+
     #RETURN CURRENT USERNAME
     def get_current_username(self):
-        return self.current_user
+        #print( "get_current_username" )
+        if self.current_username == None:
+            return "no username selected"
+        else:
+            return self.current_username
+
+    # RETURNS STORED RAND_STRING STORED IN DATABASE TABLE USERS
+    def get_stored_random_string(self, username):
+        sql = "select rand_string from users where username=(%s)"
+        self.mycursor.execute(sql, [username])
+        results = self.mycursor.fetchall()
+        return results
+
+    # RETURNS HASHED PASSWORD DATABASE TABLE USERS
+    def get_hashed_password(self, username):
+        sql = "select password from users where username=(%s)"
+        self.mycursor.execute(sql, [username])
+        result = self.mycursor.fetchall()
+        return result
+
+    #RETURNS CELL_NUM
+    def get_cell_num(self, username ):
+        print( "with username =", username )
+        sql = "select cell_num from users where username=%s"
+        self.mycursor.execute( sql, [username] )
+        result = self.mycursor.fetchall()
+        print( result )
+        return result
+
+    #RETURNS EMAIL AADDRESS
+    def get_email_add(self, username ):
+        sql = "select email_add from users where username=%s"
+        self.mycursor.execute( sql, [username] )
+        result = self.mycursor.fetchall()
+        return result
 
     #TEST IF THERE IS INTERNET CONNECTION
     def test_connection( self, host="http://www.google.com/"):
@@ -134,7 +159,6 @@ class Database():
         #print("change username")
         if self.username_exist( value ):
             print( "usernmae already exist" )
-
         else:
             sql = "update users set username=%s where username=%s"
             vals = [ value, username]
@@ -194,6 +218,19 @@ def valid_login( username, password):
 def get_current_username():
     return mydatabase.get_current_username()
 
+def set_current_username( username ):
+    mydatabase.set_current_username( username )
+
+def get_email_add( username ):
+    print( "get_email_add" )
+    return mydatabase.get_email_add( username=username )
+
+def get_cell_num( username ):
+    #print( "get_cell_num" )
+    value = mydatabase.get_cell_num( username=username)
+    #print ( "get_cell_num =",value )
+    return value
+
 def get_random_character():
     mode = randint(0, 1)
     if (mode == 0):
@@ -211,89 +248,6 @@ def get_random_string(length=10):
 
 
 if __name__ == "__main__":
-    print( " Database.py " )
+    print( "this is the database" )
+    #mydatabase.change_username("fotsek", "adfafafafa")
 
-    #mydatabase.change_username( "username", "username2" )
-    #mydatabase.change_cellnum( "example", "change_email" )
-    #mydatabase.change_email( "example", "change_email" )
-    mydatabase.change_password( "example", "change_password" )
-
-
-
-# class Local_database():
-#
-#     def __init__(self, host="localhost", password="CNSPass980423", user="root",database_name=None):
-#         self.host = host
-#         self.password = password
-#         self.user = user
-#         self.database_name = None
-#
-#         self.init_connection()
-#
-#
-#     #INITILISE CONNNECTION TO LOCAL DATABASE
-#     def init_connection(self):
-#         try:
-#             if self.database_name == None:
-#                 #connecting without database
-#                 self.database = mysql_connector.connect(host=self.host, user=self.user, password=self.password)
-#                 self.mycursor = self.database.cursor()
-#                 self.create_default_database()
-#
-#             #CONNECTING TO CURRENT DATABASE_NAME
-#             self.database = mysql_connector.connect(host=self.host, user=self.user, password=self.password, database=self.database_name)
-#             self.mycursor = self.database.cursor()
-#
-#         except:
-#             print( "cannot connect to database" )
-#
-#     #CREATES DEFAULT USERS DATABASE IF NOT EXIST
-#     def create_default_database(self):
-#         sql = "create database if not exists users_database"
-#         self.mycursor.execute( sql )
-#         self.database.commit()
-#         self.database_name = "users_database"
-#
-#     #CREATE DEFAULT USERS TABLES IF NOT EXIST
-#     def create_default_users_table(self):
-#         sql = "create table if not exists users(id int auto_increment primary key, username varchar(50), password varchar(50), email_add varchar(50), cell_num varchar(15), rand_string varchar(30))"
-#         self.mycursor.execute( sql )
-#         #   self.add_unique_constraint(column="username")
-#         self.database.commit()
-#     """
-#     def add_unique_constraint(self, column="username"):
-#         #      alter table users add unique (ID);
-#         sql = "alter table users add unique (%s)"
-#         self.mycursor.execute( sql, [column] )
-#         #self.database.commit()
-#     """
-#
-#     #RETURNS DATABASES
-#     def get_databases(self):
-#         self.mycursor.execute( "show databases" )
-#         results = self.mycursor.fetchall()
-#         return results
-#
-#     #RETURNS TABLES FROM SELECTED DATABASE
-#     def get_tables(self):
-#         self.mycursor.execute( "show tables" )
-#         #results = self.mycursor.fetchall()
-#         return self.mycursor.fetchall()
-#
-#     #def add_user(self, username, password, email_add):
-#
-#     #PRINTS TABLES FROM SELECTED DATABASE
-#     def print_tables(self):
-#         tables = self.get_tables()
-#         for i in tables:
-#             print( i )
-#
-#     def print_users_table(self):
-#         sql = "select * from users"
-#         self.mycursor.execute( sql )
-#         result = self.mycursor.fetchall()
-#         for i in result:
-#             print( i )
-#
-#
-#
