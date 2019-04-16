@@ -1,6 +1,6 @@
 
 import tkinter as tk
-
+import database
 # A page to allow changing of profile details, it will be reached via the profile settings button in the main page.
 class Profile(tk.Frame):
 
@@ -12,16 +12,23 @@ class Profile(tk.Frame):
         label_ = tk.Label(self, text="Profile Settings")
         label_.grid(sticky="W")
 
-        #database.get_username()
-        tk.Label(self, text="Username").grid(column="2", columnspan="3", row="1")
-
-        #get user info from database(emai;, phone and coin data)
-        tk.Label(self, text="Email").grid(column="0", columnspan="3", row="3")
-        tk.Label(self, text="Phone").grid(column="0", columnspan="3", row="5")
 
 
-        #Text entry to take in changes to the above details
-        #We create functions to post the data to the database
+        #DISPLAY CURRENT CREDITS
+
+        tk.Label(self, text="Username :").grid( row=2, column=0)
+        tk.Label(self, text= "Email Address :").grid( row=3, column=0)
+        tk.Label(self, text= "Cell # :").grid( row=4, column=0)
+
+        #tk.Label(self, text=database.get_current_username() ).grid(row=2, column=1)
+        self.username_display = tk.Label(self, text="this is default")
+        self.username_display.grid( row=2, column=1 )
+        self.email_add_display = tk.Label(self, text="" )
+        self.email_add_display.grid( row=3, column=1 )
+        self.cell_num_display = tk.Label(self, text="" )
+        self.cell_num_display.grid( row=4, column=1 )
+
+  
         new_email_ = tk.StringVar()
         new_email = tk.Entry(self, textvariable=new_email_)
         new_email.grid(column="3", columnspan="3", row="3")
@@ -33,5 +40,10 @@ class Profile(tk.Frame):
         back_btn = tk.Button(self, text="Back", command=lambda: controller.show_frame("MainPage"))
         back_btn.grid(column="3", columnspan="3", row="7")
 
-        #creating a function to post the changes to the database and take us back to the main page
-        #Apply_changes = tk.Button(self, text="Page Two",command=)
+    def update_username_display(self ):
+        username = database.get_current_username()
+        print("username =", username )
+        self.username_display["text"] = username
+        self.email_add_display["text"] = database.get_email_add( username )
+        #print("finnidfadfadfds")
+        self.cell_num_display["text"] = database.get_cell_num( username )
