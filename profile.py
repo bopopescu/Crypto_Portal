@@ -13,30 +13,49 @@ class Profile(tk.Frame):
         label_.grid(sticky="W")
 
         #DISPLAY LABELS
+        tk.Label(self, text="Current details").grid(row=1, column=0,columnspan=2,sticky="EW")
         tk.Label(self, text="Username :").grid( row=2, column=0)
         tk.Label(self, text= "Email Address :").grid( row=3, column=0)
         tk.Label(self, text= "Cell # :").grid( row=4, column=0)
 
-        #tk.Label(self, text=database.get_current_username() ).grid(row=2, column=1)
+        tk.Label(self, text= "Change details").grid( row=1, column=2, columnspan=2, sticky="WE")
+        tk.Label(self, text= "Change password").grid( row=2, column=2)
+        tk.Label(self, text= "Change Email address").grid( row=3, column=2)
+        tk.Label(self, text= "Change Cell #").grid( row=4, column=2)
+
         self.username_display = tk.Label(self, text="this is default")
         self.username_display.grid( row=2, column=1 )
+
         self.email_add_display = tk.Label(self, text="" )
         self.email_add_display.grid( row=3, column=1 )
+
         self.cell_num_display = tk.Label(self, text="" )
         self.cell_num_display.grid( row=4, column=1 )
-        
+
+
+
         #Text entry to take in changes to the above details
         #We create functions to post the data to the database
+        #new_username = tk.StringVar()
+        #new_username_entry = tk.Entry(self, textvariable=new_username)
+        #new_password_entry.grid( row=, column= )
+
+        new_password = tk.StringVar()
+        new_password_entry = tk.Entry(self, textvariable=new_password )
+        new_password_entry.grid(row=2, column=3)
+
         new_email_ = tk.StringVar()
         new_email = tk.Entry(self, textvariable=new_email_)
-        new_email.grid(column="3", columnspan="3", row="3")
+        new_email.grid(column="3", row="3")
 
         new_phone_ = tk.StringVar()
         new_phone = tk.Entry(self, textvariable=new_phone_)
-        new_phone.grid(column="3", columnspan="3", row="5")
+        new_phone.grid(column="3", row="4")
 
         back_btn = tk.Button(self, text="Back", command=lambda: controller.show_frame("MainPage"))
         back_btn.grid(column="3", columnspan="3", row="7")
+
+
 
     def update_username_display(self ):
         username = database.get_current_username()
