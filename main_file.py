@@ -2,7 +2,9 @@ import tkinter as tk
 import tkinter.font as tkfont
 import databases as database
 import extra_functions as extra_functions
-import urllib.request, json
+import api_functions
+import webbrowser
+
 
 class EntryWithPlaceholder():
     def __init__(self, entry, placeholder="PLACEHOLDER"):
@@ -227,14 +229,16 @@ class SignUp(tk.Frame):
         password2 = self.password2.get()
         return_message = extra_functions.details_check(username, email, phone, password, password2)
         if return_message == "Account created!":
-            database.create_user(username=username, password=password, email=email, phone=phone)
+            #add_user_to_database(self,username, hash_password, random_string, email, phone)
+            #database.create_user(username=username, password=password, email=email, phone=phone)
+            database.create_user(self, username, email, phone, password)
             self.controller.show_frame("MainPage")
         else:
             self.test.configure(text=return_message)
 
+
 # A page to allow changing of profile details, it will be reached via the profile settings button in the main page.
 class Profile(tk.Frame):
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -275,78 +279,70 @@ class MainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        self.options_frame = tk.LabelFrame(self, text="")
+        self.options_frame = tk.Frame(self)
         self.options_frame.grid(column="0", columnspan="2", row="0")
 
-        profile = tk.Button(self.options_frame, text="Profile Setteings", command=lambda: controller.show_frame("Profile"))
+        profile = tk.Button(self.options_frame, text="Profile Setteings",
+                            command=lambda: controller.show_frame("Profile"))
         profile.grid(column="0", columnspan="2", row="0")
 
         log_out = tk.Button(self.options_frame, text="Logout", command=lambda: self.controller.show_frame("StartPage"))
         log_out.grid(column="3", row="0")
 
-        json_url = "https://newsapi.org/v2/everything?q=bitcoin&apiKey=628da1c052e745c7a577c25bfc504d49"
+        # create a Frame for the Text and Scrollbar
+        self.txt_frame = tk.LabelFrame(self, text=" Article Information", width=350, height=200)
+        self.txt_frame.grid(column="0", columnspan="2", row="5")
+        # ensure a consistent GUI size
+        self.txt_frame.grid_propagate(False)
+        # implement stretchability
+        self.txt_frame.grid_rowconfigure(0, weight=1)
+        self.txt_frame.grid_columnconfigure(0, weight=1)
 
-        with urllib.request.urlopen(json_url) as url:
-            self.data = json.loads(url.read().decode())
+        # create a Text widget
+        self.txt = tk.Text(self.txt_frame, borderwidth=3, relief="sunken")
+        self.txt.config(font=("consolas", 12), undo=True, wrap='word')
+        self.txt.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
 
-        self.article_values = self.data["articles"]
+        # create a Scrollbar and associate it with txt
+        self.scrollb = tk.Scrollbar(self.txt_frame, command=self.txt.yview)
+        self.scrollb.grid(row=0, column=1, sticky='nsew')
+        self.txt['yscrollcommand'] = self.scrollb.set
 
-        self.default_font = font = tkfont.Font(family="Times", size=10)
-        self.default_bg = "yellow green"
+        # creating a frame for the article name and description
+        self.hline_frame = tk.Frame(self)
+        self.hline_frame.grid(column=0, columnspan=2, row=2, padx=5, pady=5)
+        self.hline_frame.rowconfigure(0, weight=1)
+        self.hline_frame.columnconfigure(0, weight=1)
 
-        #creating a container to hold market news
-        self.newsFrame = tk.LabelFrame(self,text="Market News", bg=self.default_bg)
-        self.newsFrame.grid(column="1",columnspan="2",row="2")
-        self.options = []
-
-        self.tkinter_text = tk.Text(self.newsFrame, bg=self.default_bg, font=tkfont.Font(family="Times", size=12) , wrap=tk.WORD )
-        #self.tkinter_text.config(state=tk.DISABLED)
-        self.tkinter_text.grid(row=2)
-
-
-
-        for i in range(0,5):
-            test_string = self.article_values[i]["title"]
-            self.options.append( test_string )
-
-        self.create_dropdown()
-
-
-        self.config(bg="yellow green")
-
-
-    def get_desription(self, title):
-         result = None
-         for i in range(0,20):
-             if title == self.article_values[i]["title"] :
-                 result = self.article_values[i]["description"]
-
-         if result==None:
-             return " cannnot find description "
-         else:
-            #print( "returning ->\"", result,"\"" )
-            return result
-
-
-    def create_dropdown(self):
-        tkvar = tk.StringVar(self.newsFrame)
-        choices = self.options
+        tkvar = tk.StringVar(self)
+        choices = api_functions.tittle_source()
         tkvar.set(choices[0])
-        self.popupMenu = tk.OptionMenu(self.newsFrame,tkvar, *choices)
-        self.popupMenu.config(bg="green")
-        self.tkinter_text.insert(tk.END, self.get_desription( choices[0] ) )
+
+        self.pop_up_menu = tk.OptionMenu(self.hline_frame, tkvar, *choices)
+        tk.Label(self.hline_frame, text="Choose an article").grid(row=1, column=1)
+        self.pop_up_menu.grid(row=2, column=1)
+        d = api_functions.url_source()
 
         def change_dropdown(*args):
-            self.tkinter_text.config(state=tk.NORMAL)
-            self.tkinter_text.delete(1.0,tk.END)
-            self.tkinter_text.insert(tk.END, self.get_desription( tkvar.get() ) )
-            self.tkinter_text.config(state=tk.DISABLED)
+            i = choices.index(tkvar.get())
+            a = api_functions.articles_source()
+            b = api_functions.description_source()
+            c = api_functions.author_source()
 
+            self.txt.config()
+            self.txt.delete(1.0, tk.END)
+            self.txt.insert('1.0', 'Source: ' + a[i] + '\n\nTitle: ' + choices[i] + '\n\nAuthor: ' + c[
+                i] + '\n\nDescription: ' + b[i])
+            return i
+
+        def open_web():
+            webbrowser.open(d[choices.index(tkvar.get())])
+
+        self.link_btn = tk.Button(self.hline_frame, text="Read Full article", command=open_web)
+        self.link_btn.grid(row=4, column=0, columnspan=2)
         tkvar.trace('w', change_dropdown)
-        self.popupMenu.grid(row=1, sticky="WE")
 
 
 if __name__ == "__main__":
     app = SampleApp()
-    app.show_frame("MainPage")
     app.mainloop()
