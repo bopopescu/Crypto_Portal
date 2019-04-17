@@ -1,8 +1,10 @@
 
 import tkinter as tk
 import extra_functions
-from main_file import EntryWithPlaceholder
+#from main_file import EntryWithPlaceholder
 import database
+
+
 
 class SignIn(tk.Frame):
     def __init__(self, parent, controller):
@@ -76,3 +78,34 @@ class SignIn(tk.Frame):
         self.put_placeholder( entry=self.username_entry, placeholder="Username" )
         self.put_placeholder( entry=self.password_entry, placeholder="Password" )
         self.messege.set("")
+
+
+
+class EntryWithPlaceholder():
+    def __init__(self, entry, placeholder="PLACEHOLDER"):
+        self.entry = entry
+        self.placeholder = placeholder
+        # print("self.placeholder = ", self.placeholder)
+        # self.placeholder_color = color
+        # print("self.placeholder_color =", self.placeholder_color )
+        self.default_fg_color = self.entry['fg']
+
+        self.entry.bind("<FocusIn>", self.foc_in)
+        self.entry.bind("<FocusOut>", self.foc_out)
+
+        self.put_placeholder()
+
+    def put_placeholder(self):
+        self.entry.insert(0, self.placeholder)
+        self.entry.config(fg="gray")
+
+    def foc_in(self, *args):
+        # print("foc_in")
+        if self.entry['fg'] == "gray":
+            self.entry.delete('0', 'end')
+            self.entry['fg'] = self.default_fg_color
+
+    def foc_out(self, *args):
+        # print("foc_out")
+        if not self.entry.get():
+            self.put_placeholder()
