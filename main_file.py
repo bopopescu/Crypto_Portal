@@ -4,7 +4,7 @@ import databases as database
 import extra_functions as extra_functions
 import api_functions
 import webbrowser
-
+from profile import *
 
 class EntryWithPlaceholder():
     def __init__(self, entry, placeholder="PLACEHOLDER"):
@@ -238,6 +238,7 @@ class SignUp(tk.Frame):
 
 
 # A page to allow changing of profile details, it will be reached via the profile settings button in the main page.
+"""
 class Profile(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -271,7 +272,7 @@ class Profile(tk.Frame):
         #creating a function to post the changes to the database and take us back to the main page
         #Apply_changes = tk.Button(self, text="Page Two",command=)
 
-
+"""
 # The page where our wallets portfolios will be created
 class MainPage(tk.Frame):
 
