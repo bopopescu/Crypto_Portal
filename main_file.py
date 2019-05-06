@@ -1,18 +1,16 @@
-
 import tkinter as tk
 import tkinter.font as tk_font
 import extra_functions
 
+from Wallets import *
 from startup import *
 from signup import *
 from signin import *
 from mainpage import *
 from profile import *
+from Encryption import *
 import api_functions
 
-
-#import database
-#import urllib.request, json
 
 class EntryWithPlaceholder():
     def __init__(self, entry, placeholder="PLACEHOLDER"):
@@ -58,7 +56,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, SignIn, SignUp, MainPage, Profile):
+        for F in (StartPage, SignIn, SignUp, MainPage, Profile, Encryption, Wallets):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -79,7 +77,6 @@ class SampleApp(tk.Tk):
         self.update( page_name )
         frame = self.frames[ page_name ]
         frame.tkraise()
-
 
 
 if __name__ == "__main__":
