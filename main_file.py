@@ -66,7 +66,7 @@ class SampleApp(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("Wallets")
+        self.show_frame("StartPage")
 
 
     def update(self, page_name):
