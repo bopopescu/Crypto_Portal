@@ -1,5 +1,4 @@
 import unittest
-import pyrebase
 from extra_functions import details_check
 from extra_functions import login_check
 from main_file import *
