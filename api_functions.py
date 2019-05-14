@@ -7,9 +7,48 @@ api = json.loads(api_req.content.decode('utf-8'))
 api_req_coins = requests.get("https://api.coinmarketcap.com/v1/ticker/?limit=2000")
 api_coins = json.loads(api_req_coins.content.decode('utf-8'))
 
+url = 'https://rest.coinapi.io/v1/trades/latest'
+headers = {'X-CoinAPI-Key' : 'A6F8C9DF-B18F-4075-B846-A1025831B8DB'}
+response = requests.get(url, headers=headers)
+api_trades = json.loads(response.content.decode('utf-8'))
+
+
+class TradesClass:
+    def __init__(self):
+        self.names_list = [" Select a trade "]
+        self.names_ = []
+        self.time_ = []
+        self.price_ = []
+        self.size_ = []
+        self.transaction_ = []
+        for item in api_trades:
+            self.names_.append(item['symbol_id'])
+            self.names_list.append(item['symbol_id'])
+            self.time_.append(item['time_exchange'])
+            self.price_.append(item['price'])
+            self.size_.append(item['size'])
+            self.transaction_.append(item['taker_side'])
+
+    def ret_name_list(self):
+        return self.names_list
+
+    def ret_name(self, pos):
+        return self.names_[pos]
+
+    def ret_time(self, pos):
+        return self.time_[pos]
+
+    def ret_price(self, pos):
+        return self.price_[pos]
+
+    def ret_size(self, pos):
+        return self.size_[pos]
+
+    def ret_transactions(self, pos):
+        return self.transaction_[pos]
+
 
 class CoinsClass:
-
     def __init__(self):
         self.coins_id = []
         self.coins_name = [" Select a coin "]
