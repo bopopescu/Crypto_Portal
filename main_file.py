@@ -1,85 +1,85 @@
 import tkinter as tk
+import tkinter.font as tk_font
+import extra_functions
+
+from Wallets import *
+from startup import *
+from signup import *
+from signin import *
+from mainpage import *
+from profile import *
+from Encryption import *
 import api_functions
-import webbrowser
 
 
-# The page where our wallets portfolios will be created
-class MainPage(tk.Frame):
+class EntryWithPlaceholder():
+    def __init__(self, entry, placeholder="PLACEHOLDER"):
+        self.entry = entry
+        self.placeholder = placeholder
+        self.default_fg_color = self.entry['fg']
 
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
+        self.entry.bind("<FocusIn>", self.foc_in)
+        self.entry.bind("<FocusOut>", self.foc_out)
 
-        self.options_frame = tk.Frame(self)
-        self.options_frame.grid(column="0", columnspan="2", row="0")
+        self.put_placeholder()
 
-        profile = tk.Button(self.options_frame, text="Profile Settings",
-                            command=lambda: controller.show_frame("Profile"))
-        profile.grid(column="0", columnspan="2", row="0")
+    def put_placeholder(self):
+        self.entry.insert(0, self.placeholder)
+        self.entry.config(fg="gray")
 
-        wallets = tk.Button(self.options_frame, text="Wallets",
-                            command=lambda: controller.show_frame("Wallets"))
-        wallets.grid(column="2", columnspan="2", row="0")
+    def foc_in(self, *args):
+        if self.entry['fg'] == "gray":
+            self.entry.delete('0', 'end')
+            self.entry['fg'] = self.default_fg_color
 
-        encryption = tk.Button(self.options_frame, text="Encryption", command=lambda: controller.show_frame("Encryption"))
-        encryption.grid(column="4", columnspan="2", row="0")
+    def foc_out(self, *args):
+        # print("foc_out")
+        if not self.entry.get():
+            self.put_placeholder()
 
-        log_out = tk.Button(self.options_frame, text="Logout", command=lambda: self.controller.show_frame("StartPage"))
-        log_out.grid(column="6", row="0")
 
-        # create a Frame for the Text and Scrollbar
-        self.txt_frame = tk.LabelFrame(self, text=" Article Information", width=350, height=200)
-        self.txt_frame.grid(column="0", columnspan="2", row="5")
-        # ensure a consistent GUI size
-        self.txt_frame.grid_propagate(False)
-        # implement stretchability
-        self.txt_frame.grid_rowconfigure(0, weight=1)
-        self.txt_frame.grid_columnconfigure(0, weight=1)
+class SampleApp(tk.Tk):
 
-        # create a Text widget
-        self.txt = tk.Text(self.txt_frame, borderwidth=3, relief="sunken")
-        self.txt.config(font=("consolas", 12), undo=True, wrap='word')
-        self.txt.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        self.title("Crypto-Portal")
+        # self.state("zoomed")
+        self.title_font = tk_font.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        self.padding = ""
 
-        # create a Scrollbar and associate it with txt
-        self.scrollb = tk.Scrollbar(self.txt_frame, command=self.txt.yview)
-        self.scrollb.grid(row=0, column=1, sticky='nsew')
-        self.txt['yscrollcommand'] = self.scrollb.set
+        # the container is where we'll stack a bunch of frames
+        # on top of each other, then the one we want visible
+        # will be raised above the others
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        # creating a frame for the article name and description
-        self.hline_frame = tk.Frame(self)
-        self.hline_frame.grid(column=0, columnspan=2, row=2, padx=5, pady=5)
-        self.hline_frame.rowconfigure(0, weight=1)
-        self.hline_frame.columnconfigure(0, weight=1)
+        self.frames = {}
+        for F in (StartPage, SignIn, SignUp, MainPage, Profile, Encryption, Wallets):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
 
-        tkvar = tk.StringVar(self)
-        test_api = api_functions.ArticlesClass()
-        choices = test_api.tittle_source()
-        tkvar.set(choices[0])
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
 
-        self.pop_up_menu = tk.OptionMenu(self.hline_frame, tkvar, *choices)
-        tk.Label(self.hline_frame, text="Choose an article").grid(row=1, column=1)
-        self.pop_up_menu.grid(row=2, column=1)
-        d = test_api.url_source()
+        self.show_frame("Wallets")
 
-        def change_dropdown(*args):
-            i = choices.index(tkvar.get())
-            a = test_api.articles_source()
-            b = test_api.description_source()
-            c = test_api.author_source()
 
-            self.txt.config()
-            self.txt.delete(1.0, tk.END)
-            self.txt.insert('1.0', 'Source: ' + a[i] + '\n\nTitle: ' + choices[i] + '\n\nAuthor: ' + c[
-                i] + '\n\nDescription: ' + b[i])
-            return i
+    def update(self, page_name):
+        self.frames[page_name].update()
 
-        def open_web():
-            webbrowser.open(d[choices.index(tkvar.get())])
+    #DISPLAY PAGE
+    def show_frame(self, page_name):
+        self.update( page_name )
+        frame = self.frames[ page_name ]
+        frame.tkraise()
 
-        self.link_btn = tk.Button(self.hline_frame, text="Read Full article", command=open_web)
-        self.link_btn.grid(row=4, column=0, columnspan=2)
-        tkvar.trace('w', change_dropdown)
-    
-    def update(self):
-        nothing = "nothing"
+
+if __name__ == "__main__":
+    app = SampleApp()
+
+    app.mainloop()
