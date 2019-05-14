@@ -1,3 +1,4 @@
 codecov
 cryptography
+pyrebase
 Fernet
