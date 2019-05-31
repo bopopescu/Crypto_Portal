@@ -47,6 +47,8 @@ class SampleApp(tk.Tk):
         self.title_font = tk_font.Font(family='Helvetica', size=18, weight="bold", slant="italic")
         self.padding = ""
 
+        self.current_username = None
+
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
         # will be raised above the others
@@ -68,18 +70,31 @@ class SampleApp(tk.Tk):
 
         self.show_frame("StartPage")
 
-
     def update(self, page_name):
-        self.frames[page_name].update()
+        # print( "update", page_name )
+        self.frames[page_name].update_page()
 
-    #DISPLAY PAGE
+    # DISPLAY PAGE
     def show_frame(self, page_name):
-        self.update( page_name )
-        frame = self.frames[ page_name ]
+        self.update(page_name)
+        frame = self.frames[page_name]
         frame.tkraise()
+
+    def set_current_username(self, username):
+        print("set_current_username ->", username)
+        self.current_username = username
+
+    def get_current_username(self):
+        return self.current_username
 
 
 if __name__ == "__main__":
+    print("start")
     app = SampleApp()
-
+    app.state('zoomed')
+    # app.show_frame("Encryption")
+    # app.show_frame("MainPage")
+    # app.show_frame("Wallets")
     app.mainloop()
+
+    print("end")
