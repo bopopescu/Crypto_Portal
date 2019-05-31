@@ -12,6 +12,25 @@ headers = {'X-CoinAPI-Key' : 'A6F8C9DF-B18F-4075-B846-A1025831B8DB'}
 response = requests.get(url, headers=headers)
 api_trades = json.loads(response.content.decode('utf-8'))
 
+class GraphsData:
+    def __init__(self):
+        self.names_ = []
+        self.total_supply_ = []
+        self._vol24h_ = []
+        for i in range(0, 5):
+            self.names_.append(api_coins[i]['name'])
+            self.total_supply_.append(api_coins[i]['available_supply'])
+            self._vol24h_.append(api_coins[i]['24h_volume_usd'])
+
+    def ret_name_list(self):
+        return self.names_
+
+    def ret_supply(self):
+        return self.total_supply_
+
+    def ret_size(self):
+        return self._vol24h_
+
 
 class TradesClass:
     def __init__(self):
