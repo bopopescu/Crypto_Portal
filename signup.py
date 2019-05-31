@@ -1,8 +1,8 @@
 
+
 import tkinter as tk
 import extra_functions
 import database
-
 
 class SignUp(tk.Frame):
 
@@ -73,10 +73,12 @@ class SignUp(tk.Frame):
         return_message = extra_functions.details_check(username, email, phone, password, password2)
         if return_message == "Account created!":
             database.create_user(username=username, password=password, email=email, phone=phone)
+            self.controller.set_current_username(username=username)
             self.controller.show_frame("MainPage")
         else:
             self.test.configure(text=return_message)
 
 
-    def update(self):
+    def update_page(self):
+        print( "updating singup" )
         nothing= "nothing"
