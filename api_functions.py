@@ -114,6 +114,39 @@ class CoinsClass:
 
         return self.timestamp
 
+    def re_symbol(self, _id):
+        symbol = "-1"
+        for item_ in api_coins:
+            if item_[ "id" ] == _id:
+                symbol = item_[ "symbol" ]
+
+        return symbol
+
+    def re_pc1h(self, _id):
+        res = "-1"
+        for item_ in api_coins:
+            if item_["id"] == _id:
+                res = item_["percent_change_1h"]
+
+        return res
+
+    def re_pc7d(self, _id):
+        result = "-1"
+        for item_ in api_coins:
+            if item_["id"] == _id:
+                result = item_["percent_change_7d"]
+
+        return result
+
+    def re_pc24h(self, _id):
+        result = "-1"
+        for item_ in api_coins:
+            if item_["id"] == _id:
+                result = item_["percent_change_24h"]
+
+        return result
+
+
 
 class ArticlesClass:
     def __init__(self):
