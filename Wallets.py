@@ -40,6 +40,10 @@ class Wallets(tk.Frame):
         self.view_wallet_frame = ManageWallets(parent=self, controller=self.controller, text=" Manage Wallets", width=350, height=300, bg=b_g, fg=f_g, font=d_font)
         self.view_wallet_frame.grid(column=0, columnspan=14, row=2, sticky="EW", padx=20, pady=5)
 
+        # Creating a graphs frame to display the related graphs
+        self.graphs_frame = DisplayGraphs(parent=self, controller=self.controller, text=" Graphs", width=350, height=300, bg=b_g, fg=f_g, font=d_font)
+        self.graphs_frame.grid(column=0, columnspan=14, row=3, sticky="EW", padx=20, pady=5)
+
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=4)
         self.columnconfigure(0, weight=1)
@@ -47,7 +51,33 @@ class Wallets(tk.Frame):
     def update_page(self):
         print("updating wallets")
 
+class DisplayGraphs(tk.LabelFrame):
+    def __init__(self, parent, controller, *args, **kwargs):
+        tk.LabelFrame.__init__(self, parent, *args, **kwargs)
+        self.propagate(False)
+        self.controller = controller
+        b_g = "#e0ebeb"
+        f_g = "gray31"
+        families = ["Courier", "Comic Sans MS", "Arial Black", "Verdana", "Yu Gothic UI"]
+        d_font = tk_fonts.Font(family=families[4], size=10, weight="bold")
+    
+        def plot_pie_chart():
+            labels = plot_data.ret_name_list()
+            sizes = plot_data._vol24h_
+            colors = ['gold', 'yellowgreen', 'red', 'lightcoral', 'lightskyblue']
+            explode = (0.1, 0, 0, 0, 0)  # explode 1st slice
 
+            # Plot
+            plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+                    autopct='%1.1f%%', shadow=True, startangle=140)
+
+            plt.axis('equal')
+            plt.show()
+
+        self.pie_chart = tk.Button(self, text="Pie Chart", bg=b_g, fg=f_g, font=d_font, command=plot_pie_chart)
+        self.pie_chart.grid(column="1", columnspan="2", row="1", padx=5, pady=5, sticky="EW")
+        
+        
 class ManageWallets(tk.LabelFrame):
     def __init__(self, parent, controller, *args, **kwargs):
         self.controller = controller
