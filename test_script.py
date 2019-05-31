@@ -5,8 +5,39 @@ from extra_functions import login_check
 from main_file import *
 # details_check(username, email, phone, pass1,pass2):
 
-class MyTestCase(unittest.TestCase):
+use_trades = TradesClass()
 
+class MyTestCase(unittest.TestCase):
+    """
+        Testing the functions and classes created in the api_functions script
+    """
+    #Test that the function return a list for the dropdown menus
+    def test_names_list(self):
+        self.assertTrue(isinstance(TradesClass(), type(use_trades)))
+
+    #Check if ret_name_list returns a list.
+    def test_ret_name_list(self):
+        self.assertTrue(isinstance(list(), type(use_trades.ret_name_list())))
+
+    #Check if the function return a string type
+    def test_ret_name(self):
+        self.assertTrue(isinstance(str(), type(use_trades.ret_name(0))))
+
+    #check if the function returns the correct unix time stamp
+    def test_ret_time(self):
+        self.assertTrue(isinstance(str(), type(use_trades.ret_time(0))))
+
+    #Test that the price object is not a string
+    def test_ret_price(self):
+        self.assertFalse(isinstance(str(), type(use_trades.ret_price(0))))
+
+    #check if the size is returned as a float object
+    def test_ret_size(self):
+        self.assertTrue(isinstance(float(), type(use_trades.ret_size(0))))
+
+    """
+        Tesing the functuions created in the extra functions.
+    """
     #Testing if our detials function returns the correct message when all parameters are provided
     def test_details_function(self):
         self.assertEqual(details_check("hello","hello","hello","hello","hello"),
