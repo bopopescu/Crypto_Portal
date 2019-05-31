@@ -5,12 +5,14 @@ import os
 import re
 import database
 
+mydatabase = database.Database()
+
 def details_check(username, email, phone, pass1,pass2):
 
 	return_message = ''
 	if username == "":
 		return "Username Field is required!"
-	elif database.username_exist( username ) :
+	elif database.username_exist(username):
 		return "Username exist"
 	elif email == "":
 		return "Email Filed is required!"
@@ -23,7 +25,6 @@ def details_check(username, email, phone, pass1,pass2):
 	elif pass1 != pass2:
 		return "Password mismatch!"
 	else:
-		#return return_message
 		return "Account created!"
 
 def login_check(username,password):
@@ -38,3 +39,16 @@ def login_check(username,password):
 
 	else:
 		return "Incorrect login"
+
+
+def wallet_check(username, amount, wallet_id):
+	if wallet_id=="Select a coin":
+		return "Please select a coin"
+
+	elif mydatabase.wallet_exist(username=username, wallet_id=wallet_id) == True:
+		return "Wallet already exist"
+
+	elif amount == "":
+		return "Amount not filled"
+	else:
+		return "Wallet created"
