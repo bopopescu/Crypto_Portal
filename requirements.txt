@@ -2,4 +2,4 @@ codecov
 cryptography
 pyrebase
 Fernet
-matplotlib.pyplot
+matplotlib
