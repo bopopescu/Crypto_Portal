@@ -28,5 +28,5 @@ class StartPage(tk.Frame):
         button2.grid(row=2, column=0, ipadx=30, ipady=10, sticky="N", pady=(0, 100))
         self.rowconfigure(2, weight=1)
 
-    def update(self):
+    def update_page(self):
         nothing="nothing"
