@@ -1,6 +1,7 @@
 import tkinter as tk
 from api_functions import CoinsClass
 from api_functions import TradesClass
+from api_functions import GraphsData
 import tkinter.font as tk_fonts
 import database
 import extra_functions
@@ -10,6 +11,7 @@ import matplotlib.pyplot as plt
 # The page where our wallets will be created
 coin_class = CoinsClass()
 trades_class = TradesClass()
+plot_data = GraphsData()
 mydatabase = database.Database()
 
 class Wallets(tk.Frame):
