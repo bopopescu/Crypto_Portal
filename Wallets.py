@@ -5,6 +5,7 @@ import tkinter.font as tk_fonts
 import database
 import extra_functions
 import ctypes
+import matplotlib.pyplot as plt
 
 # The page where our wallets will be created
 coin_class = CoinsClass()
